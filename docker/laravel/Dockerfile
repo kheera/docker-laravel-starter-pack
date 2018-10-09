@@ -17,7 +17,12 @@ RUN apt-get update && apt-get install -y \
     libapache2-mod-php \
     vim \
     php \
-    php-mysql
+    php-common \
+    php-mbstring \
+    php-mysql \
+    php-xml \
+    php-zip
+
 
 # Install node
 WORKDIR /usr/local/sbin
