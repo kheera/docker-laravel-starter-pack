@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+    laravel:
+        container_name: laravel-container
+        image: laravel-image
+        build:
+            context: .
+            dockerfile: ./docker/laravel/Dockerfile
+        volumes:
+            - ./:/var/www/
+        ports:
+            - "80:80"
+        entrypoint: ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
