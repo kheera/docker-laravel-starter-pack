@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 MAINTAINER Shane Nelson
 
-# Stops apt-get from asking questions, like what timezone do you live in
+# Stops apt-get from asking questions, like "what timezone do you live in?"
 ENV DEBIAN_FRONTEND noninteractive
 
 # Docker recommends all apt-get commands occur in one RUN command
@@ -21,17 +21,21 @@ RUN apt-get update && apt-get install -y \
     php-mbstring \
     php-mysql \
     php-xml \
-    php-zip
+    php-zip \
+    unzip
 
 
-# Install node
+# Install node (so we can use npm)
 WORKDIR /usr/local/sbin
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash; \
     apt-get install -y nodejs
 
-# Install composer
+# Install composer (used to install Laravel)
 RUN curl -sL https://raw.githubusercontent.com/composer/getcomposer.org/d3a6ed2ed96ff423fb1991f22e4bcabd3db662f8/web/installer | php -- --quiet
 RUN ln -s /usr/local/sbin/composer.phar /usr/local/sbin/composer
+
+# Modify apache config for Laravel
+COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-available/
 
 WORKDIR /var/www
 COPY ./docker/laravel/start.sh /usr/local/sbin/start.sh
