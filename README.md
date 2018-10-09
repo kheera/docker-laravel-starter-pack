@@ -8,7 +8,7 @@
 1. If Docker has a running container (shown with `docker ps`) and yet you can't connect to the Apache server, check to see what your Docker machines IP
     address is. `docker-machine ip` will tell you. Try loading the address from `docker-machine ip` in your web browser.
 3. Once you're sure Apache is working, connect to Docker with `docker exec -it laravel-container bash`
-3.5 Laravel won't install into a directory containing files, so delete the `myapp` folder so the next step works properly. 
+3 Laravel won't install into a directory containing files, so delete the `myapp` folder so the next step works properly. 
     From within Docker you can use: `rm -rf /var/www/myapp` 
 4. Now install Laravel: `composer create-project --prefer-dist laravel/laravel myapp`. 
 5. If you choose a project name other than `myapp` you also have to update the Apache
