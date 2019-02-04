@@ -46,3 +46,5 @@ RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 
 WORKDIR /var/www
 COPY ./docker/laravel/start.sh /usr/local/sbin/start.sh
+
+WORKDIR /var/www/html
