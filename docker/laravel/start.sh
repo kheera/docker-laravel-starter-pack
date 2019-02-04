@@ -1,3 +1,41 @@
-echo "Ready..."
-# https://blog.phusion.nl/2015/01/20/docker-and-the-pid-1-zombie-reaping-problem/
-while true; do sleep 1000; done
+#!/usr/bin/env bash
+echo "Starting box customization..."
+if [ ! -f /var/www/html/package.json ]; then
+    START_NEW_LARAVEL_INSTALL=true
+fi
+
+if [ $START_NEW_LARAVEL_INSTALL ]; then
+    echo "This looks like a new project."
+    echo "Installing laravel..."
+    LARAVEL_MKTEMP_TEMPLATE=/var/www/laravel_install_XXXXX
+    LARAVEL_INSTALL_WORK_DIR=`mktemp -d $LARAVEL_MKTEMP_TEMPLATE`
+    # check if install dir was created
+    if [[ ! $LARAVEL_INSTALL_WORK_DIR || ! -d $LARAVEL_INSTALL_WORK_DIR ]]; then
+      echo "Could not create laravel temp install dir"
+      exit 1
+    fi
+    composer create-project --prefer-dist laravel/laravel $LARAVEL_INSTALL_WORK_DIR
+    mv -vn $LARAVEL_INSTALL_WORK_DIR/* /var/www/html
+    mv -vn $LARAVEL_INSTALL_WORK_DIR/.[!.]* /var/www/html
+fi
+
+cd /var/www/html
+
+echo "Running composer update..."
+composer update
+
+echo "Running npm install..."
+npm install
+
+echo "Starting apache..."
+/usr/sbin/apache2ctl -D FOREGROUND
+
+#npm run watch-poll
+
+function cleanup {
+    if [[ $START_NEW_LARAVEL_INSTALL ] && [ -d $LARAVEL_INSTALL_WORK_DIR ]]; then
+        rm -rf $LARAVEL_INSTALL_WORK_DIR
+        echo "Deleted temp laravel install directory $LARAVEL_INSTALL_WORK_DIR"
+    fi
+}
+trap cleanup EXIT

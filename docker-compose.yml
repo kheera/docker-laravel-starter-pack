@@ -2,13 +2,18 @@ version: '2'
 
 services:
     laravel:
-        container_name: laravel-container
-        image: laravel-image
+        container_name: web-box-${project_name}
+        image: web-image-${project_name}
         build:
             context: .
             dockerfile: ./docker/laravel/Dockerfile
+            args:
+                - PROJECT_NAME=${project_name}
         volumes:
             - ./:/var/www/
+            - node_modules:/var/www/html/node_modules
         ports:
             - "80:80"
-        entrypoint: ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+        entrypoint: ["/usr/local/sbin/start.sh"]
+volumes:
+    node_modules:
