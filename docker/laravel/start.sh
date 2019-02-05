@@ -17,6 +17,8 @@ if [ $START_NEW_LARAVEL_INSTALL ]; then
     composer create-project --prefer-dist laravel/laravel $LARAVEL_INSTALL_WORK_DIR
     mv -vn $LARAVEL_INSTALL_WORK_DIR/* /var/www/html
     mv -vn $LARAVEL_INSTALL_WORK_DIR/.[!.]* /var/www/html
+    rm -rf $LARAVEL_INSTALL_WORK_DIR
+    echo "Deleted temp laravel install directory $LARAVEL_INSTALL_WORK_DIR"
 fi
 
 cd /var/www/html
@@ -26,16 +28,10 @@ composer update
 
 echo "Running npm install..."
 npm install
+npm update
 
 echo "Starting apache..."
 /usr/sbin/apache2ctl -D FOREGROUND
 
 #npm run watch-poll
 
-function cleanup {
-    if [[ $START_NEW_LARAVEL_INSTALL ] && [ -d $LARAVEL_INSTALL_WORK_DIR ]]; then
-        rm -rf $LARAVEL_INSTALL_WORK_DIR
-        echo "Deleted temp laravel install directory $LARAVEL_INSTALL_WORK_DIR"
-    fi
-}
-trap cleanup EXIT
