@@ -10,4 +10,4 @@ Installation steps:
 1. cp docker/.env.example .env
 1. Set project name in .env
 1. docker-compose up
-1. To rebuild vue assets and watch for changes: docker exec -it web-box-starter-pack npm run watch-poll
+1. For development, run npm run watch from the host machine.
