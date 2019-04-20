@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     vim \
     php \
     php-common \
+    php-curl \
     php-mbstring \
     php-mysql \
     php-xml \
@@ -33,9 +34,9 @@ WORKDIR /usr/local/sbin
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash; \
     apt-get install -y nodejs
 
-# Install composer (used to install Laravel)
-RUN curl -sL https://raw.githubusercontent.com/composer/getcomposer.org/d3a6ed2ed96ff423fb1991f22e4bcabd3db662f8/web/installer | php -- --quiet
-RUN ln -s /usr/local/sbin/composer.phar /usr/local/sbin/composer
+RUN curl -sS https://getcomposer.org/installer \
+    | php && mv composer.phar /usr/local/bin/composer \
+    && composer global require hirak/prestissimo --no-plugins --no-scripts
 
 # Modify apache config for Laravel
 COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-available/

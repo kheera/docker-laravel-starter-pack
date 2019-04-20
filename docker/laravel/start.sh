@@ -26,12 +26,14 @@ cd /var/www/html
 echo "Running composer update..."
 composer update
 
-echo "Running npm install..."
-npm install
-npm update
+echo "Running composer install..."
+composer install
+
+echo ""
+echo "******* RUN NPM FROM HOST ***********"
+echo ""
 
 echo "Starting apache..."
 /usr/sbin/apache2ctl -D FOREGROUND
 
-#npm run watch-poll
 
