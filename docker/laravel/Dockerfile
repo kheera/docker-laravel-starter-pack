@@ -39,7 +39,7 @@ RUN curl -sS https://getcomposer.org/installer \
     && composer global require hirak/prestissimo --no-plugins --no-scripts
 
 # Modify apache config for Laravel
-COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-available/
+COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-enabled/
 
 # Redirects log files to docker console
 RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
