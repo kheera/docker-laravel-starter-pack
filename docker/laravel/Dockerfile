@@ -28,6 +28,7 @@ RUN apt-get update && apt-get install -y \
     rsync \
     unzip
 
+RUN a2enmod rewrite
 
 # Install node (so we can use npm)
 WORKDIR /usr/local/sbin
