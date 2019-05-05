@@ -11,9 +11,22 @@ services:
                 - PROJECT_NAME=${project_name}
         volumes:
             - ./:/var/www/
-            - node_modules:/var/www/html/node_modules
+        depends_on:
+            - "mysql-service"
         ports:
             - "80:80"
         entrypoint: ["/usr/local/sbin/start.sh"]
-volumes:
-    node_modules:
+
+    mysql-service:
+        container_name: mysql-box-${project_name}
+        image: mysql-image-${project_name}
+        build:
+            context: .
+            dockerfile: ./docker/mysql/Dockerfile
+        environment:
+            MYSQL_ROOT_PASSWORD: docker
+            MYSQL_DATABASE: docker
+        ports:
+            - "3306:3306"
+        networks:
+            - default
