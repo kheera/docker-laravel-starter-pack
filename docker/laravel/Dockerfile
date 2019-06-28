@@ -4,6 +4,7 @@ MAINTAINER Shane Nelson
 
 # http://knowledgebasement.com/how-to-run-sites-securely-with-apache-and-php-fpm-on-ubuntu-16-04-lts/
 # May have to remove mod_php_apache to get this working
+# Set proper owner in:  /etc/php/7.2/fpm/pool.d/www.conf
 
 # Stops apt-get from asking questions, like "what timezone do you live in?"
 ARG PROJECT_NAME
@@ -20,24 +21,29 @@ RUN apt-get install -y \
     gcc \
     gnupg \
     make \
-    mysql-client \
     vim \
     php \
     php-common \
     php-curl \
     php-mbstring \
     php-mysql \
-   # php-fpm \
+    php-fpm \
     php-xml \
     php-zip \
     rsync \
     unzip
 
-# For php7.2-fpm.sock
-#RUN mkdir /run/php
-
 RUN a2enmod rewrite
 RUN a2enmod proxy_fcgi setenvif
+RUN a2enconf php7.2-fpm
+RUN a2enmod ssl
+
+RUN mkdir /etc/self-signed/
+RUN printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth" > /etc/self-signed/openssl.conf
+RUN openssl req -x509 -out /etc/self-signed/localhost.crt -keyout /etc/self-signed/localhost.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=localhost' -extensions EXT \
+  -config /etc/self-signed/openssl.conf
 
 # Install node (so we can use npm)
 WORKDIR /usr/local/sbin
@@ -50,6 +56,7 @@ RUN curl -sS https://getcomposer.org/installer \
 
 # Modify apache config for Laravel
 COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-enabled/
+COPY ./docker/laravel/apache/default-ssl.conf /etc/apache2/sites-enabled/
 
 # Redirects log files to docker console
 RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
