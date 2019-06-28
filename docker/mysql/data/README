@@ -1,0 +1,6 @@
+Files in this folder ending in:
+
+* .sql
+* .sql.gz
+
+Will be automatically loaded into the mysql database by docker.

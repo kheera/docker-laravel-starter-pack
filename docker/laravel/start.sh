@@ -29,10 +29,6 @@ composer update
 echo "Running composer install..."
 composer install
 
-echo ""
-echo "******* RUN NPM FROM HOST ***********"
-echo ""
-
 echo "Starting apache..."
 /usr/sbin/apache2ctl -D FOREGROUND
 
