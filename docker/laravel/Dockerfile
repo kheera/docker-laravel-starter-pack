@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:latest
 
 MAINTAINER Shane Nelson
 
@@ -47,7 +47,7 @@ RUN openssl req -x509 -out /etc/self-signed/localhost.crt -keyout /etc/self-sign
 
 # Install node (so we can use npm)
 WORKDIR /usr/local/sbin
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash; \
+RUN curl -sL https://deb.nodesource.com/setup_14.x | bash; \
     apt-get install -y nodejs
 
 RUN curl -sS https://getcomposer.org/installer \
