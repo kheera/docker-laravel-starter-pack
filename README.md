@@ -7,7 +7,9 @@ Requirements:
 
 Installation steps: 
 1. Clone repo
-1. cp docker/.env.example .env
+1. cp .env.example .env
 1. Set project name in .env
 1. docker-compose up
 1. For development, run npm run watch from the host machine.
+
+Sets up Ubuntu 20, Apache 2 and Laravel 8. Also includes vue and webpack.
