@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
+
 echo "Starting box customization..."
+
+echo "Running composer update..."
+composer update
+
+echo "Running composer install..."
+composer install
+
 if [ ! -f /var/www/html/package.json ]; then
     START_NEW_LARAVEL_INSTALL=true
 fi
@@ -22,12 +30,6 @@ if [ $START_NEW_LARAVEL_INSTALL ]; then
 fi
 
 cd /var/www/html
-
-echo "Running composer update..."
-composer update
-
-echo "Running composer install..."
-composer install
 
 echo "Starting apache..."
 /usr/sbin/apache2ctl -D FOREGROUND
