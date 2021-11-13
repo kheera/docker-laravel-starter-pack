@@ -11,20 +11,19 @@ ARG PROJECT_NAME
 ENV DEBIAN_FRONTEND noninteractive
 ENV PROJECT_NAME=${PROJECT_NAME}
 
-# Docker recommends all apt-get commands occur in one RUN command
+# Docker recommends all apt-get commands occur in one RUN command so they are in the same image slice
 # and they should be listed alphabetically so as to prevent installing the same package twice
-RUN apt-get update
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     apache2 \
     curl \
     g++ \
     gcc \
     gnupg \
     make \
+    libapache2-mod-php \
     vim \
     php \
     php-common \
-    php-curl \
     php-mbstring \
     php-mysql \
     php-fpm \
@@ -35,7 +34,7 @@ RUN apt-get install -y \
 
 RUN a2enmod rewrite
 RUN a2enmod proxy_fcgi setenvif
-RUN a2enconf php7.2-fpm
+RUN a2enconf php7.4-fpm
 RUN a2enmod ssl
 
 RUN mkdir /etc/self-signed/
@@ -47,16 +46,15 @@ RUN openssl req -x509 -out /etc/self-signed/localhost.crt -keyout /etc/self-sign
 
 # Install node (so we can use npm)
 WORKDIR /usr/local/sbin
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash; \
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash; \
     apt-get install -y nodejs
 
-RUN curl -sS https://getcomposer.org/installer \
-    | php && mv composer.phar /usr/local/bin/composer \
-    && composer global require hirak/prestissimo --no-plugins --no-scripts
+# Install composer (used to install Laravel)
+RUN curl -sL https://raw.githubusercontent.com/composer/getcomposer.org/d3a6ed2ed96ff423fb1991f22e4bcabd3db662f8/web/installer | php -- --quiet
+RUN ln -s /usr/local/sbin/composer.phar /usr/local/sbin/composer
 
 # Modify apache config for Laravel
-COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-enabled/
-COPY ./docker/laravel/apache/default-ssl.conf /etc/apache2/sites-enabled/
+COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-available/
 
 # Redirects log files to docker console
 RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
@@ -64,5 +62,6 @@ RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
 
 WORKDIR /var/www
 COPY ./docker/laravel/start.sh /usr/local/sbin/start.sh
+RUN chmod +x /usr/local/sbin/start.sh
 
 WORKDIR /var/www/html
