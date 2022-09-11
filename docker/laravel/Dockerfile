@@ -34,7 +34,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN a2enmod rewrite
 RUN a2enmod proxy_fcgi setenvif
-RUN a2enconf php7.4-fpm
+RUN a2enconf php-fpm
 RUN a2enmod ssl
 
 RUN mkdir /etc/self-signed/
