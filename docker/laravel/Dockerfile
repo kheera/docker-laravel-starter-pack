@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 MAINTAINER Shane Nelson
 
@@ -15,26 +15,27 @@ ENV PROJECT_NAME=${PROJECT_NAME}
 # and they should be listed alphabetically so as to prevent installing the same package twice
 RUN apt-get update && apt-get install -y \
     apache2 \
+    cmake \
     curl \
     g++ \
     gcc \
     gnupg \
-    make \
-    libapache2-mod-php \
-    vim \
-    php \
-    php-common \
-    php-mbstring \
-    php-mysql \
-    php-fpm \
-    php-xml \
-    php-zip \
+    libapache2-mod-php8.1 \
+    php8.1 \
+    php8.1-common \
+    php8.1-mbstring \
+    php8.1-mysql \
+    php8.1-fpm \
+    php8.1-curl \
+    php8.1-xml \
+    php8.1-zip \
     rsync \
-    unzip
+    unzip \
+    vim
 
 RUN a2enmod rewrite
 RUN a2enmod proxy_fcgi setenvif
-RUN a2enconf php-fpm
+RUN a2enconf php8.1-fpm
 RUN a2enmod ssl
 
 RUN mkdir /etc/self-signed/
