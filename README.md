@@ -12,4 +12,9 @@ Installation steps:
 1. docker-compose up
 1. For development, run npm run watch from the host machine.
 
-Sets up Ubuntu 20, Apache 2 and Laravel 8. Also includes vue and webpack.
+Sets up:
+* Ubuntu 22.04,
+* Apache 2 and
+* Laravel 8.
+* Also includes
+* vue w/ Laravel
