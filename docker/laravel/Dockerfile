@@ -15,7 +15,6 @@ ENV PROJECT_NAME=${PROJECT_NAME}
 # and they should be listed alphabetically so as to prevent installing the same package twice
 RUN apt-get update && apt-get install -y \
     apache2 \
-    cmake \
     curl \
     g++ \
     gcc \
