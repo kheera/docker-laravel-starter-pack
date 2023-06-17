@@ -32,6 +32,7 @@ fi
 cd /var/www/html
 
 echo "Starting apache..."
+service php8.1-fpm restart
 /usr/sbin/apache2ctl -D FOREGROUND
 
 
