@@ -25,14 +25,14 @@ This includes installing nodejs from within the wsl world.
 
 https://learn.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-wsl
 
-Installation steps: 
+## Installation steps: 
 1. Clone repo
 1. cp .env.example .env
 1. Set project name in .env
 1. docker-compose up
 1. For development, run npm run watch from the host machine.
 
-Sets up:
+## This repo configures the following:
 * Ubuntu 22.04,
 * Apache 2 and
 * Laravel 8.
