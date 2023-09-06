@@ -28,6 +28,6 @@ services:
             MYSQL_ROOT_PASSWORD: docker
             MYSQL_DATABASE: docker
         ports:
-            - "${MYSQL_PORT:-443}:3306"
+            - "${MYSQL_PORT:-3306}:3306"
         networks:
             - default
