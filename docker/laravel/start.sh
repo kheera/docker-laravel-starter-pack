@@ -2,13 +2,7 @@
 
 echo "Starting box customization..."
 
-echo "Running composer update..."
-composer update
-
-echo "Running composer install..."
-composer install
-
-if [ ! -f /var/www/html/package.json ]; then
+if [ ! -f /var/www/package.json ]; then
     START_NEW_LARAVEL_INSTALL=true
 fi
 
@@ -22,14 +16,17 @@ if [ $START_NEW_LARAVEL_INSTALL ]; then
       echo "Could not create laravel temp install dir"
       exit 1
     fi
-    composer create-project --prefer-dist laravel/laravel $LARAVEL_INSTALL_WORK_DIR
-    mv -vn $LARAVEL_INSTALL_WORK_DIR/* /var/www/html
-    mv -vn $LARAVEL_INSTALL_WORK_DIR/.[!.]* /var/www/html
+    composer create-project laravel/laravel $LARAVEL_INSTALL_WORK_DIR
+    mv -vn $LARAVEL_INSTALL_WORK_DIR/* /var/www
+    mv -vn $LARAVEL_INSTALL_WORK_DIR/.[!.]* /var/www
     rm -rf $LARAVEL_INSTALL_WORK_DIR
     echo "Deleted temp laravel install directory $LARAVEL_INSTALL_WORK_DIR"
 fi
 
-cd /var/www/html
+echo "Running composer install and update..."
+composer update; composer install
+
+cd /var/www
 
 echo "Starting apache..."
 service php8.1-fpm restart

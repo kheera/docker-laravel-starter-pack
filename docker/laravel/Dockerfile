@@ -64,4 +64,4 @@ WORKDIR /var/www
 COPY ./docker/laravel/start.sh /usr/local/sbin/start.sh
 RUN chmod +x /usr/local/sbin/start.sh
 
-WORKDIR /var/www/html
+WORKDIR /var/www
