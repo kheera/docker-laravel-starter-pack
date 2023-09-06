@@ -21,6 +21,7 @@ if [ $START_NEW_LARAVEL_INSTALL ]; then
     mv -vn $LARAVEL_INSTALL_WORK_DIR/.[!.]* /var/www
     rm -rf $LARAVEL_INSTALL_WORK_DIR
     echo "Deleted temp laravel install directory $LARAVEL_INSTALL_WORK_DIR"
+    php artisan key:generate
 fi
 
 echo "Running composer install and update..."
