@@ -54,7 +54,8 @@ RUN curl -sL https://raw.githubusercontent.com/composer/getcomposer.org/d3a6ed2e
 RUN ln -s /usr/local/sbin/composer.phar /usr/local/sbin/composer
 
 # Modify apache config for Laravel
-COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-available/
+COPY ./docker/laravel/apache/000-default.conf /etc/apache2/sites-enabled/
+COPY ./docker/laravel/apache/default-ssl.conf /etc/apache2/sites-enabled/
 
 # Redirects log files to docker console
 RUN ln -sf /proc/self/fd/1 /var/log/apache2/access.log && \
